@@ -1,25 +1,9 @@
 #!/bin/bash
 
-read_pid() {
-  file_path="$1"
-
-if [[ -f "$file_path" ]]; then
-  pid=$(grep -o -E '[0-9]+(\.[0-9]+)?' "$file_path" | head -n 1)
-  if [[ -n "$first_number" ]]; then
-    echo "First number in file: $first_number"
-  else
-    echo "There are no numbers in the file."
-  fi
-else
-  echo "File does not exist."
-fi
-
-}
-
 start() {
   file_path="${MONITORING_DIR}/${FILE_NAME}"
   if [[ -f "$file_path" ]]; then
-    pid=$(grep -o -E '[0-9]+(\.[0-9]+)?' "$file_path" | head -n 1)
+    pid=$(cat "$file_path")
     if [[ -n "$pid" ]]; then
       echo "monitoring is already running: process ${pid}"
       exit 0
@@ -36,7 +20,7 @@ start() {
 stop() {
   file_path="${MONITORING_DIR}/${FILE_NAME}"
   if [[ -f "$file_path" ]]; then
-    pid=$(grep -o -E '[0-9]+(\.[0-9]+)?' "$file_path" | head -n 1)
+    pid=$(cat "$file_path")
     if [[ -n "$pid" ]]; then
       kill "$pid"
       rm "$file_path"
