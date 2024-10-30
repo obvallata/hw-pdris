@@ -1,0 +1,31 @@
+services:
+  app:
+    image: obvallata/metrics:0.0.1
+    environment:
+      PG_DB: metrics
+      PG_USER: obvallata
+      PG_PASSWORD: sber
+      PG_HOST: db
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    networks:
+      - internal_net
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: metrics
+      POSTGRES_USER: obvallata
+      POSTGRES_PASSWORD: sber
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - internal_net
+
+volumes:
+  pgdata:
+
+networks:
+  internal_net:
