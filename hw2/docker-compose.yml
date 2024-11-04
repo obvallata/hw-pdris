@@ -1,0 +1,38 @@
+services:
+  instance1:
+    build: ./instances
+    tty: true
+    networks:
+      - instance-net
+    ports:
+      - 8001:80
+
+  instance2:
+    build: ./instances
+    tty: true
+    networks:
+      - instance-net
+    ports:
+      - 8002:80
+
+  instance3:
+    build: ./instances
+    tty: true
+    networks:
+      - instance-net
+    ports:
+      - 8003:80
+
+  ansible-master:
+    build: .
+    tty: true
+    networks:
+      - instance-net
+    depends_on:
+      - instance1
+      - instance2
+      - instance3
+
+networks:
+  instance-net:
+    driver: bridge
