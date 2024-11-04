@@ -1,0 +1,36 @@
+---
+- hosts: all
+  tasks:
+  - name: nginx installing
+    apk:
+      name: nginx
+      state: present
+      update_cache: yes
+
+  - name: nginx config copying
+    template:
+      src: ../nginx/nginx.conf
+      dest: /etc/nginx/nginx.conf
+
+  - name: nginx running
+    service:
+      name: nginx
+      state: started
+      enabled: yes
+
+  - name: app directory creating
+    file:
+      path: /app
+      state: directory
+
+  - name: app files copying
+    copy:
+      src: ../app/
+      dest: /app
+
+  - name: dependencies installing
+    pip:
+      requirements: /app/requirements.txt
+
+  - name: app running
+    command: python3 /app/main.py

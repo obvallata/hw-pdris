@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<style>
+    h4 {
+        color: black;
+    font-family: monospace;
+    font-weight: lighter;
+    font-size: 25px;
+    text-align: left;
+    }
+    h1 {
+        color: black;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 27px;
+    text-align: left;
+    }
+    body {
+    height: 700px;
+    background: plum;
+    font-family: monospace;
+    font-size: 25px;
+    border: 2px solid grey;
+    text-align: center;
+    }
+</style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Levenshtein space to animals</title>
+</head>
+<body>
+<h2>Type an interesting word (your name for example)*</h2>
+<h1>*At the moment, the algorithm is adapted only for the Russian language</h1>
+<form method="post" action="/add_message">
+    <input type="text" name="text">
+    <button type="submit">Check out the closest animals</button>
+</form>
+<div><h3>The closest animals for "{{ name }}" are:</h3></div>
+{% for message in messages %}
+<div><h4>Breed of dog -- {{ message.dog }}</h4></div>
+<div><h4>(Levenshtein space {{ message.lev_dog }})</h4></div>
+<div><h4>Breed of cat -- {{ message.cat }}</h4></div>
+<div><h4>(Levenshtein space {{ message.lev_cat }})</h4></div>
+{% endfor %}
+</body>
+</html>
