@@ -11,11 +11,9 @@
         <sonar.projectKey>go-coverage</sonar.projectKey>
         <sonar.projectName>go-coverage</sonar.projectName>
         <sonar.language>go</sonar.language>
-        <sonar.sources>src</sonar.sources>
-        <sonar.tests>src</sonar.tests>
-        <sonar.inclusions>**/*.go</sonar.inclusions>
-        <sonar.exclusions>**/*_test.go</sonar.exclusions>
-        <sonar.go.coverage.reportPaths>src/cover.out</sonar.go.coverage.reportPaths>
+        <sonar.sources>src/main.go</sonar.sources>
+        <sonar.tests>src/app_test.go</sonar.tests>
+        <sonar.go.coverage.reportPaths>src/coverage.out</sonar.go.coverage.reportPaths>
     </properties>
 
     <build>
