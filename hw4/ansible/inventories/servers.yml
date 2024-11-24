@@ -1,0 +1,4 @@
+[instances]
+  instance1 ansible_ssh_user=root ansible_ssh_pass=obvallata
+  instance2 ansible_ssh_user=root ansible_ssh_pass=obvallata
+  instance3 ansible_ssh_user=root ansible_ssh_pass=obvallata

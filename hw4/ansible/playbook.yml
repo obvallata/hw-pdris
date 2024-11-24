@@ -1,0 +1,21 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: app directory creating
+      file:
+        path: /app
+        state: directory
+
+    - name: app files copying
+      copy:
+        src: "{{ app_home }}/src/"
+        dest: /src
+
+    - name: application building
+      shell:
+        cmd: "cd /src && go build -o app"
+
+    - name: app running
+      shell: nohup /src/app </dev/null >/dev/null 2>&1 &
