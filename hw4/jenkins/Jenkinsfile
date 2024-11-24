@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clone repository with app') {
+            steps {
+                git branch: 'hw4-dev', url: 'https://github.com/obvallata/hw-pdris.git'
+            }
+        }
+
+        stage('Run unit tests') {
+            steps {
+                sh "cd src && go test -coverprofile=coverage.out"
+            }
+        }
+
+        stage('Report allure') {
+            steps {
+                allure([
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [[path: 'src/allure-results']]
+                ])
+            }
+        }
+
+        stage('Sonar') {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    tool name: 'maven', type: 'maven'
+                    sh 'mvn clean sonar:sonar'
+                }
+            }
+        }
+
+        stage('Deploy app') {
+            steps {
+                sh "cd /ansible && ansible-playbook playbook.yml --extra-vars app_home=${env.WORKSPACE}"
+            }
+        }
+
+    }
+
+    post {
+        always {
+            echo 'Done'
+        }
+    }
+}
