@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-metrics
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-metrics
+  template:
+    metadata:
+      name: app-metrics
+      labels:
+        app: app-metrics
+    spec:
+      containers:
+        - name: app-metrics
+          env:
+            - name: PG_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: postgres_user
+            - name: PG_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: postgres_password
+            - name: PG_HOST
+              value: postgres
+            - name: PG_DB
+              value: testdb
+          image: obvallata/metrics:0.0.1
+          imagePullPolicy: IfNotPresent
