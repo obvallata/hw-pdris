@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: log-agent
+  labels:
+    app: log-agent
+spec:
+  selector:
+    matchLabels:
+      app: log-agent
+  template:
+    metadata:
+      labels:
+        app: log-agent
+    spec:
+      containers:
+      - name: log-agent
+        image: "alpine:3.16"
+        command: ["/bin/sh"]
+        args: ["-c", "apk add --no-cache inotify-tools >> /dev/null && while inotifywait -q -o /dev/null -e modify /app/logs/app.log; do tail -n 1 /app/logs/app.log | tee -a /var/log/node-logs/app.log; done"]
+        volumeMounts:
+        - name: app-logs
+          mountPath: /app/logs
+        - name: node-logs
+          mountPath: /var/log/node-logs
+      volumes:
+      - name: app-logs
+        hostPath:
+          path: /app/logs
+          type: DirectoryOrCreate
+      - name: node-logs
+        hostPath:
+          path: /var/log/node-logs
+          type: DirectoryOrCreate
