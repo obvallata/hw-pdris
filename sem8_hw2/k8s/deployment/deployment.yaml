@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logs-app
+  labels:
+    app: logs-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: logs-app
+  template:
+    metadata:
+      labels:
+        app: logs-app
+    spec:
+      containers:
+      - name: logs-app
+        image: logs-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+        env:
+        - name: PORT
+          value: "8000"
+        volumeMounts:
+        - name: logs-volume
+          mountPath: /app/logs
+      volumes:
+      - name: logs-volume
+        hostPath:
+          path: /app/logs
+          type: DirectoryOrCreate 
